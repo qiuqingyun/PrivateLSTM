@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "*.txt": "plaintext",
+        "array": "cpp",
+        "iostream": "cpp",
+        "random": "cpp",
+        "*.tcc": "cpp",
+        "functional": "cpp",
+        "ostream": "cpp",
+        "iomanip": "cpp",
+        "iosfwd": "cpp",
+        "thread": "cpp"
+    }
+}
