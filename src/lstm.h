@@ -141,7 +141,7 @@ public:
 
 private:
     mpf_class actualValue, predictiveValue, deltaValue;
-    int steps = 20;
+
     int counts = 0;
     vector<array<string, 58>> data;
     void dataReadIn(int dataSetindex, int userIndex);
@@ -202,7 +202,6 @@ void Lstm::dataReadIn(int dataSetindex, int userIndex)
         ++index;
     }
     infile.close();
-    
 }
 
 //数据检查
@@ -227,9 +226,9 @@ void Lstm::dataFill(int index, bool flag)
 {
     int indexStart;
     if (flag == TRAIN)
-        indexStart = index * this->steps;
+        indexStart = index * steps;
     else
-        indexStart = 432 + index * this->steps;
+        indexStart = 432 + index * steps;
     int indexMax = this->data.size();
     //cout << "indexStart: " << indexStart << endl;
     if (indexStart + 21 > indexMax)
@@ -283,13 +282,14 @@ void Lstm::train()
             exit(1);
         }
         int userCounts = this->counts / 480;
-        int trainingRounds = (432 - 21) / this->steps + 1;
-        int testingRounds = (48 - 21) / this->steps + 1;
+        int trainingRounds = (432 - 21) / steps + 1;
+        int testingRounds = (48 - 21) / steps + 1;
         cout << "\nUser Counts: " << userCounts
              << " | Training Counts: " << trainingRounds
              << " | Testing Counts: " << testingRounds << endl;
         // showTime("Preparation");
-
+        if (userCountsFLAG)
+            userCounts = userLimit;
         for (int userIndex = userStart; userIndex < userCounts; userIndex++) //userCounts
         {
             this->dataReadIn(dataSetIndex, userIndex);
@@ -360,7 +360,7 @@ void Lstm::test(int userIndex, FILE *fptr, FILE *fptrT)
     // cout << "People " << p + 1 << endl;
     fprintf(fptr, "\nUser No.%d\n\n", userIndex + 1);
     fprintf(fptrT, "\nUser No.%d\n\n", userIndex + 1);
-    int testingRounds = (48 - 21) / this->steps + 1;
+    int testingRounds = (48 - 21) / steps + 1;
     cout << "Test rounds: " << testingRounds << endl;
     for (int testingIndex = 0; testingIndex < testingRounds; testingIndex++)
     {

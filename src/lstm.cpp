@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        while ((ch = getopt(argc, argv, "r:a:n:d:u:i:p:s:t:h")) != -1)
+        while ((ch = getopt(argc, argv, "r:a:n:d:u:i:p:s:t:l:h")) != -1)
         {
             switch (ch)
             {
@@ -49,12 +49,15 @@ int main(int argc, char *argv[])
                 userStartIndex = stoi(optarg);
                 break;
             case 's':
-                shareStart = stoi(optarg);
-                shareEnd = shareStart + 1;
+                steps = stoi(optarg);
                 break;
             case 't':
                 dataSetStartIndex = stoi(optarg);
                 dataSetNum = dataSetStartIndex + 1;
+                break;
+            case 'l':
+                userLimit = stoi(optarg);
+                userCountsFLAG = 1;
                 break;
             case 'i':
                 IP = optarg;

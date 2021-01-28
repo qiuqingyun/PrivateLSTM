@@ -1,3 +1,6 @@
 80/
 160/
 bin/
+mem.log
+task.sh
+.gitignore

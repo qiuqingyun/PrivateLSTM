@@ -10,6 +10,9 @@ int baseNum = 10;
 int tripesFLAG=0;
 int shareStart=0;
 int shareEnd=5;
+int steps = 20;
+int userCountsFLAG=0;
+int userLimit=0;
 mp_bitcnt_t randBit = 512;
 mp_bitcnt_t eAndC = 32;
 
@@ -21,8 +24,8 @@ char checkMSG[3] = "ok";
 char symbol[4] = {'|', '/', '-', '\\'};
 string prefix[2] = {"Training_", "Test_"};
 
-mpz_class modNum{"1248878241464690322159961483223834105349154894079", 10};      //160bit
-// mpz_class modNum{"618970019642690137449562111", 10};      //80bit
+// mpz_class modNum{"1248878241464690322159961483223834105349154894079", 10};      //160bit
+mpz_class modNum{"618970019642690137449562111", 10};      //80bit
 
 //mpz_class eAndC{"4294967296", 10};//2^32
 //mpz_class eAndC{"16777216", 10};//2^24

@@ -28,27 +28,19 @@ Triples::Triples()
 void Triples::init(int flag, string prefixString)
 {
     cout << "Triples preparing " << flush;
-    cout << symbol[0] << "\b" << flush;
     this->readIntTriples(flag, prefixString);
-    cout << symbol[1] << "\b" << flush;
     this->readMatrixTriples(40, 58, 1, flag, prefixString);
-    cout << symbol[2] << "\b" << flush;
     this->readMatrixTriples(40, 40, 1, flag, prefixString);
-    cout << symbol[3] << "\b" << flush;
     this->readMatrixTriples(20, 40, 1, flag, prefixString);
     this->readMatrixTriples(1, 20, 1, flag, prefixString);
     this->readMatrixTriples(1, 1, 20, flag, prefixString);
-    cout << symbol[0] << "\b" << flush;
     this->readMatrixTriples(20, 20, 1, flag, prefixString);
     this->readMatrixTriples(20, 1, 1, flag, prefixString);
     this->readMatrixTriples(20, 1, 40, flag, prefixString);
-    cout << symbol[1] << "\b" << flush;
     this->readMatrixTriples(40, 40, 20, flag, prefixString);
     this->readMatrixTriples(40, 20, 1, flag, prefixString);
     this->readMatrixTriples(40, 1, 40, flag, prefixString);
-    cout << symbol[2] << "\b" << flush;
     this->readMatrixTriples(40, 1, 58, flag, prefixString);
-    cout << symbol[3] << "\b" << flush;
     cout << "\rTriples OK                  " << endl;
 }
 
@@ -312,6 +304,9 @@ void Triples::readIntTriples(int flag, string prefixString)
     }
     string line;
     mpz_class index, a, b, c;
+    while (!this->intTriples.empty())
+        this->intTriples.pop();
+    // cout << "stack size: " << this->intTriples.size() << endl;
     while (getline(infile, line) && infile.good() && !infile.eof() && line != "")
     {
         this->deserialization(line, index, a, b, c);
@@ -366,7 +361,7 @@ bool Triples::deserialization(string in_string, mpz_class &index, mpz_class &a, 
     char *cstr = stringToChar(in_string);
     pch = strtok(cstr, iDelim);
     index = mpz_class(pch, baseNum); //分离出序号
-    pch = strtok(nullptr, iDelim);      //剩下的三元组
+    pch = strtok(nullptr, iDelim);   //剩下的三元组
     pch = strtok(pch, tDelim);
     a = mpz_class(pch, baseNum); //分离出a
     pch = strtok(nullptr, tDelim);
@@ -383,7 +378,7 @@ bool Triples::deserialization(string in_string, mpz_class &index, Matrix &a, Mat
     char *cstr = stringToChar(in_string);
     pch1 = strtok(cstr, iDelim);
     index = mpz_class(pch1, baseNum); //分离出序号
-    pch1 = strtok(nullptr, iDelim);      //剩下的三元组
+    pch1 = strtok(nullptr, iDelim);   //剩下的三元组
     pch2 = strtok(pch1, tDelim);
     string a_string = pch2; //分离出a
     pch2 = strtok(nullptr, tDelim);
