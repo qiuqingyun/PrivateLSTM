@@ -186,7 +186,7 @@ void Triples::createIntTriple(ofstream &outfile)
         this->network.mReceive(u);
         this->network.mSend(ck_string);
         this->network.mReceive(v);
-        mpz_invert(r_inv.get_mpz_t(), r.get_mpz_t(), modNum.get_mpz_t());
+        mpz_invert(r_inv.get_mpz_t(), r.get_mpz_t(), modNum[modNumIndex].get_mpz_t());
         this->tripleTools.mLocalMocheng(r_inv, v, temp);
         this->tripleTools.mojia(u, temp, c);
         //由于CLIENT计算c，因此在计算完后生成随机序列号发送给对方，作为两方三元组的对应标志
@@ -270,7 +270,7 @@ void Triples::createMatrixTriple(ofstream &outfile, int m, int d, int n)
         this->network.mSend(ck_string);
         this->network.mReceive(V);
 
-        mpz_invert(r_inv.get_mpz_t(), r.get_mpz_t(), modNum.get_mpz_t());
+        mpz_invert(r_inv.get_mpz_t(), r.get_mpz_t(), modNum[modNumIndex].get_mpz_t());
         Matrix uTimesRinv;
         this->tripleTools.mConstMulOrigin(V, uTimesRinv, r_inv.get_mpz_t());
         this->tripleTools.mAdd(U, uTimesRinv, C);
@@ -341,6 +341,8 @@ void Triples::readMatrixTriples(int m, int d, int n, int flag, string prefixStri
     string line;
     Matrix a, b, c;
     mpz_class index;
+    while (!this->matrixTriples[indexFlag].empty())
+        this->matrixTriples[indexFlag].pop();
     while (getline(infile, line) && infile.good() && !infile.eof() && line != "")
     {
         this->deserialization(line, index, a, b, c);

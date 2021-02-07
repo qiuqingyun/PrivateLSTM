@@ -40,7 +40,7 @@ void shareGen()
                 mpf_mul_2exp(x_f.get_mpf_t(), x_f.get_mpf_t(), eAndC);
                 server = randNumGen();
                 x_z = x_f;
-                client = x_z + modNum - server;
+                client = x_z + modNum[modNumIndex] - server;
                 serverStr += server.get_str();
                 clientStr += client.get_str();
                 int time = r % 48;
@@ -57,7 +57,7 @@ void shareGen()
                     mpf_mul_2exp(x_f.get_mpf_t(), x_f.get_mpf_t(), eAndC);
                     server = randNumGen();
                     x_z = x_f;
-                    client = x_z + modNum - server;
+                    client = x_z + modNum[modNumIndex] - server;
                     serverStr += server.get_str();
                     clientStr += client.get_str();
                 }

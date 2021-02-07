@@ -91,9 +91,9 @@ void TriplesMul::mMul(Matrix x, Matrix y, Matrix &ans)
                 if (role == SERVER)
                 {
                     mpz_class temp_div;
-                    temp_div = modNum - z; //先模减
+                    temp_div = modNum[modNumIndex] - z; //先模减
                     mpz_tdiv_q_2exp(z.get_mpz_t(), temp_div.get_mpz_t(), eAndC); //缩小
-                    z = modNum - z; //再模减
+                    z = modNum[modNumIndex] - z; //再模减
                 } else
                 {
                     mpz_tdiv_q_2exp(z.get_mpz_t(), z.get_mpz_t(), eAndC); //缩小2^32倍
@@ -130,16 +130,16 @@ void TriplesMul::mocheng(mpz_class x, mpz_class y, mpz_class &z)
     mpz_mul(temp2.get_mpz_t(), E.get_mpz_t(), triad.b.get_mpz_t());
     temp3 = triad.c;
     z = temp1 + temp2 + temp3 + temp4;
-    mpz_mod(z.get_mpz_t(), z.get_mpz_t(), modNum.get_mpz_t()); //取模
+    mpz_mod(z.get_mpz_t(), z.get_mpz_t(), modNum[modNumIndex].get_mpz_t()); //取模
     //截断操作
     if (z != 0)
     {
         if (role == SERVER)
         {
             mpz_class temp_div;
-            temp_div = modNum - z; //先模减
+            temp_div = modNum[modNumIndex] - z; //先模减
             mpz_tdiv_q_2exp(z.get_mpz_t(), temp_div.get_mpz_t(), eAndC); //缩小
-            z = modNum - z;                                              //再模减
+            z = modNum[modNumIndex] - z;                                              //再模减
         } else
             mpz_tdiv_q_2exp(z.get_mpz_t(), z.get_mpz_t(), eAndC); //缩小2^32倍
     }
@@ -205,16 +205,16 @@ void TriplesMul::mMull(Matrix x, Matrix y, Matrix &ans)
             mpz_mul(temp2.get_mpz_t(), temp.E.get_mpz_t(), temp.triple.b.get_mpz_t());
             temp3 = temp.triple.c;
             z = temp1 + temp2 + temp3 + temp4;
-            mpz_mod(z.get_mpz_t(), z.get_mpz_t(), modNum.get_mpz_t()); //取模
+            mpz_mod(z.get_mpz_t(), z.get_mpz_t(), modNum[modNumIndex].get_mpz_t()); //取模
             //截断操作
             if (z != 0)
             {
                 if (role == SERVER)
                 {
                     mpz_class temp_div;
-                    temp_div = modNum - z; //先模减
+                    temp_div = modNum[modNumIndex] - z; //先模减
                     mpz_tdiv_q_2exp(z.get_mpz_t(), temp_div.get_mpz_t(), eAndC); //缩小
-                    z = modNum - z;                                              //再模减
+                    z = modNum[modNumIndex] - z;                                              //再模减
                 } else
                     mpz_tdiv_q_2exp(z.get_mpz_t(), z.get_mpz_t(), eAndC); //缩小2^32倍
             }
@@ -246,9 +246,9 @@ void TriplesMul::mConstMul(Matrix x, Matrix &ans, mpz_ptr num)
                 if (role == SERVER)
                 {
                     mpz_class temp_div;
-                    temp_div = modNum - z; //先模减
+                    temp_div = modNum[modNumIndex] - z; //先模减
                     mpz_tdiv_q_2exp(z.get_mpz_t(), temp_div.get_mpz_t(), eAndC); //缩小
-                    z = modNum - z;                                              //再模减
+                    z = modNum[modNumIndex] - z;                                              //再模减
                 } else
                     mpz_tdiv_q_2exp(z.get_mpz_t(), z.get_mpz_t(), eAndC); //缩小
             }
@@ -320,8 +320,8 @@ void TriplesMul::getPlain(Matrix cipher, string outputWord)
             if (temp.matrix[i][j].get_d() != 0)
             {
                 mpf_class tempF1{temp.matrix[i][j]};
-                if (tempF1 > modNum / 2)
-                    tempF1 -= modNum;
+                if (tempF1 > modNum[modNumIndex] / 2)
+                    tempF1 -= modNum[modNumIndex];
                 mpf_div_2exp(tempF.get_mpf_t(), tempF1.get_mpf_t(), eAndC);
                 gmp_printf("(%2d-%2d) %9.5Ff\t", i, j, tempF.get_mpf_t());
             } else
@@ -346,13 +346,13 @@ mpf_class TriplesMul::getPlain(mpz_class cipher, string outputWord)
         this->network.mSend(cipher);
     }
     temp = (cipher + cipher2);
-    temp = temp % modNum;
+    temp = temp % modNum[modNumIndex];
     cout << outputWord << ": ";
     mpf_class tempF{temp};
     if (tempF != 0)
     {
-        if (tempF > modNum / 2)
-            tempF -= modNum;
+        if (tempF > modNum[modNumIndex] / 2)
+            tempF -= modNum[modNumIndex];
         mpf_div_2exp(tempF.get_mpf_t(), tempF.get_mpf_t(), eAndC);
         gmp_printf("%.8Ff\n", tempF.get_mpf_t());
     } else

@@ -257,6 +257,11 @@ void Lstm::train()
     for (int dataSetIndex = dataSetStartIndex; dataSetIndex < dataSetNum; dataSetIndex++)
     {
         this->dataCk(dataSetIndex);
+        if (this->counts % 480)
+        { //数据错误，不是480的整数倍
+            cout << "Data error!" << endl;
+            exit(1);
+        }
         int userStart = 0;
         char opt[] = "w";
         if (!userStartFLAG)
@@ -275,12 +280,6 @@ void Lstm::train()
         FILE *fptrTesting = fopen(fileNameTest.c_str(), (const char *)opt);
         FILE *fptrTimeTesting = fopen(fileNameTimeTest.c_str(), (const char *)opt);
 
-        // int rounds = this->distribution[p][trainingEnd] - this->distribution[p][trainingStart] + 1;
-        if (this->counts % 480)
-        { //数据错误，不是480的整数倍
-            cout << "Data error!" << endl;
-            exit(1);
-        }
         int userCounts = this->counts / 480;
         int trainingRounds = (432 - 21) / steps + 1;
         int testingRounds = (48 - 21) / steps + 1;
@@ -353,11 +352,6 @@ void Lstm::train()
 //测试
 void Lstm::test(int userIndex, FILE *fptr, FILE *fptrT)
 {
-    // string saveFileName = "./input/matrix/People_" + to_string(p + 1) + "_";
-    // saveFileName += (role == SERVER) ? "SERVER" : "CLIENT";
-    // saveFileName += "_save.dat";
-    // this->loadMatrix(saveFileName);
-    // cout << "People " << p + 1 << endl;
     fprintf(fptr, "\nUser No.%d\n\n", userIndex + 1);
     fprintf(fptrT, "\nUser No.%d\n\n", userIndex + 1);
     int testingRounds = (48 - 21) / steps + 1;
@@ -383,8 +377,7 @@ void Lstm::test(int userIndex, FILE *fptr, FILE *fptrT)
         fflush(fptr);
         cout << "Testing No." << testingIndex + 1 << " OK" << endl;
     }
-    cout << "\nUser No." << userIndex + 1
-         << " Test finish." << endl;
+    cout << "\nUser No." << userIndex + 1<< " Test finish." << endl;
 }
 
 //读入三元组

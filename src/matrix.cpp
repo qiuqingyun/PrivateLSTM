@@ -417,8 +417,8 @@ void MatrixTools::mojia(mpz_class x, mpz_class y, mpz_class &z)
     mpz_t a, b, r;
     mpz_inits(a, b, r, nullptr);
     mpz_add(a, x.get_mpz_t(), y.get_mpz_t());
-    mpz_add(b, a, modNum.get_mpz_t());
-    mpz_mod(r, b, modNum.get_mpz_t());
+    mpz_add(b, a, modNum[modNumIndex].get_mpz_t());
+    mpz_mod(r, b, modNum[modNumIndex].get_mpz_t());
     z = mpz_class(r);
     mpz_clears(a, b, r, nullptr);
 }
@@ -435,8 +435,8 @@ void MatrixTools::mojian(mpz_class x, mpz_class y, mpz_class &z)
     mpz_t a, b, r;
     mpz_inits(a, b, r, nullptr);
     mpz_sub(a, x.get_mpz_t(), y.get_mpz_t());
-    mpz_add(b, a, modNum.get_mpz_t());
-    mpz_mod(r, b, modNum.get_mpz_t());
+    mpz_add(b, a, modNum[modNumIndex].get_mpz_t());
+    mpz_mod(r, b, modNum[modNumIndex].get_mpz_t());
     z = mpz_class(r);
     mpz_clears(a, b, r, nullptr);
 }
@@ -447,8 +447,8 @@ void MatrixTools::mLocalMocheng(mpz_class x, mpz_class y, mpz_class &z)
     mpz_t a, b, r;
     mpz_inits(a, b, r, nullptr);
     mpz_mul(a, x.get_mpz_t(), y.get_mpz_t());
-    mpz_add(b, a, modNum.get_mpz_t());
-    mpz_mod(r, b, modNum.get_mpz_t());
+    mpz_add(b, a, modNum[modNumIndex].get_mpz_t());
+    mpz_mod(r, b, modNum[modNumIndex].get_mpz_t());
     z = mpz_class(r);
     mpz_clears(a, b, r, nullptr);
 }

@@ -77,8 +77,8 @@ void plainMatrix()
                     if (m[j].matrix[row][col].get_d() != 0)
                     {
                         mpf_class tempF1{m[j].matrix[row][col]};
-                        if (tempF1 > modNum / 2)
-                            tempF1 -= modNum;
+                        if (tempF1 > modNum[modNumIndex] / 2)
+                            tempF1 -= modNum[modNumIndex];
                         mpf_div_2exp(tempF.get_mpf_t(), tempF1.get_mpf_t(), eAndC);
                         gmp_fprintf(outfile, "%.5Ff,", tempF.get_mpf_t());
                     } else

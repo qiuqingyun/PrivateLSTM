@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        while ((ch = getopt(argc, argv, "r:a:n:d:u:i:p:s:t:l:h")) != -1)
+        while ((ch = getopt(argc, argv, "r:a:n:d:u:i:p:s:t:l:m:h")) != -1)
         {
             switch (ch)
             {
@@ -64,6 +64,9 @@ int main(int argc, char *argv[])
                 break;
             case 'p':
                 PORT = stoi(optarg);
+                break;
+            case 'm':
+                modNumIndex = stoi(optarg);
                 break;
             case '?':
                 printf("unknow option:%c\n", optopt);

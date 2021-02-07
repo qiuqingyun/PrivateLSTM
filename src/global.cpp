@@ -24,9 +24,10 @@ char checkMSG[3] = "ok";
 char symbol[4] = {'|', '/', '-', '\\'};
 string prefix[2] = {"Training_", "Test_"};
 
-// mpz_class modNum{"1248878241464690322159961483223834105349154894079", 10};      //160bit
-mpz_class modNum{"618970019642690137449562111", 10};      //80bit
-
+mpz_class modNum160{"1248878241464690322159961483223834105349154894079", 10};      //160bit
+mpz_class modNum80{"618970019642690137449562111", 10};      //80bit
+mpz_class modNum[2]={modNum160,modNum80};
+int modNumIndex=0;
 //mpz_class eAndC{"4294967296", 10};//2^32
 //mpz_class eAndC{"16777216", 10};//2^24
 //string modNumStr = "40343";//小素数
@@ -103,7 +104,7 @@ mpz_class randNumGen()
     gmp_randinit_mt(grt);
     gmp_randseed_ui(grt, e());
     mpz_urandomb(randNum.get_mpz_t(), grt, randBit);
-    mpz_mod(ans.get_mpz_t(), randNum.get_mpz_t(), modNum.get_mpz_t());
+    mpz_mod(ans.get_mpz_t(), randNum.get_mpz_t(), modNum[modNumIndex].get_mpz_t());
     gmp_randclear(grt);
     return ans;
 }
