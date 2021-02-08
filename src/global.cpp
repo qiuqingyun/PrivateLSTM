@@ -2,17 +2,17 @@
 
 bool role;
 string IP = "127.0.0.1";
-int PORT=26481;
-int dataSetNum=5;
-int dataSetStartIndex=0;
-int userStartIndex=0;
+int PORT = 26481;
+int dataSetNum = 5;
+int dataSetStartIndex = 0;
+int userStartIndex = 0;
 int baseNum = 10;
-int tripesFLAG=0;
-int shareStart=0;
-int shareEnd=5;
+int tripesFLAG = 0;
+int shareStart = 0;
+int shareEnd = 5;
 int steps = 20;
-int userCountsFLAG=0;
-int userLimit=0;
+int userCountsFLAG = 0;
+int userLimit = 0;
 mp_bitcnt_t randBit = 512;
 mp_bitcnt_t eAndC = 32;
 
@@ -24,17 +24,17 @@ char checkMSG[3] = "ok";
 char symbol[4] = {'|', '/', '-', '\\'};
 string prefix[2] = {"Training_", "Test_"};
 
-mpz_class modNum160{"1248878241464690322159961483223834105349154894079", 10};      //160bit
-mpz_class modNum80{"618970019642690137449562111", 10};      //80bit
-mpz_class modNum[2]={modNum160,modNum80};
-int modNumIndex=0;
+mpz_class modNum160{"1248878241464690322159961483223834105349154894079", 10}; //160bit
+mpz_class modNum80{"618970019642690137449562111", 10};                        //80bit
+mpz_class modNum[2] = {modNum160, modNum80};
+int modNumIndex = 0;
 //mpz_class eAndC{"4294967296", 10};//2^32
 //mpz_class eAndC{"16777216", 10};//2^24
 //string modNumStr = "40343";//小素数
 mpz_class sig0{"2147483648", 10};         //放大2^32倍, 0.5
 mpz_class sig1{"1071164843", 10};         //放大2^32倍, 0.2494
-mpz_class sig2{"0", 10};                      //放大2^32倍, 1.5491e-14
-mpz_class sig3{"-79027398", 10};         //放大2^32倍, -0.0184
+mpz_class sig2{"0", 10};                  //放大2^32倍, 1.5491e-14
+mpz_class sig3{"-79027398", 10};          //放大2^32倍, -0.0184
 mpz_class learningRate{"1073741824", 10}; //放大2^32倍, 0.25
 mpz_class learningRate2{"107374182", 10}; //放大2^32倍, 0.025
 
@@ -132,7 +132,7 @@ int showTime(string word)
     time_t allTime = (double)(point - start);
     time_t thisTime = (double)(point - lastPoint);
     cout << "Using time: " << thisTime / 3600 % 24 << "h " << thisTime / 60 % 60 << "m " << thisTime % 60 << "s | "
-         << "Total time: " << allTime / 3600 % 24 << "h " << allTime / 60 % 60 << "m " << allTime % 60 << "s" << endl;
+         << "Total time: " << allTime / 3600 / 24 << "d " << allTime / 3600 % 24 << "h " << allTime / 60 % 60 << "m " << allTime % 60 << "s" << endl;
     lastPoint = point;
     return thisTime;
 }
@@ -141,7 +141,7 @@ void showTime(int flag)
 {
     time_t point = time(nullptr);
     time_t allTime = (double)(point - start);
-    cout << "Total time: " << allTime / 3600 % 24 << "h " << allTime / 60 % 60 << "m " << allTime % 60 << "s" << endl;
+    cout << "Total time: " << allTime / 3600 / 24 << "d " << allTime / 3600 % 24 << "h " << allTime / 60 % 60 << "m " << allTime % 60 << "s" << endl;
     if (SPEED)
         cout << "Send speed: " << speedS << "MiB/s | Recv speed:" << speedR << "MiB/s"
              << endl;
