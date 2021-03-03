@@ -1,6 +1,7 @@
 80/
 160/
 bin/
+output/
 mem.log
 task.sh
 .gitignore
