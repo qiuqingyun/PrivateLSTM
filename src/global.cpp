@@ -14,7 +14,7 @@ int steps = 20;
 int userCountsFLAG = 0;
 int userLimit = 0;
 mp_bitcnt_t randBit = 512;
-mp_bitcnt_t eAndC = 27;
+mp_bitcnt_t eAndC = 30;
 
 char tDelim[2] = "-";
 char mDelim[2] = ",";
@@ -31,6 +31,7 @@ int modNumIndex = 0;
 //mpz_class eAndC{"4294967296", 10};//2^32
 //mpz_class eAndC{"16777216", 10};//2^24
 //string modNumStr = "40343";//小素数
+
 // mpz_class sig0{"2147483648", 10};         //放大2^32倍, 0.5
 // mpz_class sig1{"1071164843", 10};         //放大2^32倍, 0.2494
 // mpz_class sig2{"0", 10};                  //放大2^32倍, 1.5491e-14
@@ -38,12 +39,19 @@ int modNumIndex = 0;
 // mpz_class learningRate{"1073741824", 10}; //放大2^32倍, 0.25
 // mpz_class learningRate2{"107374182", 10}; //放大2^32倍, 0.025
 
-mpz_class sig0{"67108864", 10};         //放大2^27倍, 0.5
-mpz_class sig1{"33473901", 10};         //放大2^27倍, 0.2494
-mpz_class sig2{"0", 10};                  //放大2^27倍, 1.5491e-14
-mpz_class sig3{"-2469606", 10};          //放大2^27倍, -0.0184
-mpz_class learningRate{"33554432", 10}; //放大2^27倍, 0.25
-mpz_class learningRate2{"3355443", 10}; //放大2^27倍, 0.025
+mpz_class sig0{"536870912", 10};         //放大2^30倍, 0.5
+mpz_class sig1{"267791211", 10};         //放大2^30倍, 0.2494
+mpz_class sig2{"0", 10};                  //放大2^30倍, 1.5491e-14
+mpz_class sig3{"-19756849", 10};          //放大2^30倍, -0.0184
+mpz_class learningRate{"268435456", 10}; //放大2^30倍, 0.25
+mpz_class learningRate2{"26843545", 10}; //放大2^30倍, 0.025
+
+// mpz_class sig0{"524288", 10};         //放大2^20倍, 0.5
+// mpz_class sig1{"261514", 10};         //放大2^20倍, 0.2494
+// mpz_class sig2{"0", 10};                  //放大2^20倍, 1.5491e-14
+// mpz_class sig3{"-19293", 10};          //放大2^20倍, -0.0184
+// mpz_class learningRate{"262144", 10}; //放大2^20倍, 0.25
+// mpz_class learningRate2{"26214", 10}; //放大2^20倍, 0.025
 
 int m1m1m1_counts = 49626;
 int m40m58m1_counts = 80;

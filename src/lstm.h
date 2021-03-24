@@ -241,19 +241,24 @@ void Lstm::dataFill(int index, bool flag)
         for (int j = 0; j < 58; j++)
         {
             mpz_class temp{this->data[indexStart][j]};
+            // gmp_printf("%2d-%2d:%Zd\n", i, j, temp.get_mpz_t());
+            // triplesMul.getPlain(temp, to_string(i) + "-" + to_string(j));
             this->layer1.X[i].change(j, 0, temp);
         }
         indexStart++;
     }
     mpz_class temp{this->data[indexStart][0]};
     this->output_train.change(0, 0, temp);
-    //triplesMul.getPlain(temp, "ans");
+    // gmp_printf("temp:%Zd\n", temp.get_mpz_t());
+    // triplesMul.getPlain(temp, "ans");
 }
 
 //训练
 void Lstm::train()
 {
     int userStartFLAG = 0;
+    string secBit=modNumIndex==0?"160bit":"80bit";
+    cout<<"bit:"<<eAndC<<"bit "<<secBit<<endl;
     for (int dataSetIndex = dataSetStartIndex; dataSetIndex < dataSetNum; dataSetIndex++)
     {
         this->dataCk(dataSetIndex);
@@ -377,7 +382,7 @@ void Lstm::test(int userIndex, FILE *fptr, FILE *fptrT)
         fflush(fptr);
         cout << "Testing No." << testingIndex + 1 << " OK" << endl;
     }
-    cout << "\nUser No." << userIndex + 1<< " Test finish." << endl;
+    cout << "\nUser No." << userIndex + 1 << " Test finish." << endl;
 }
 
 //读入三元组
@@ -428,7 +433,10 @@ void Lstm_layer1::forward()
         Matrix temp40t1_1, temp40t1_2, temp40t1_3;
         Matrix temp_Sj;
         //求f
+        // triplesMul.getPlain(this->X[round], "X");
+        // triplesMul.getPlain(this->Wfx1, "Wfx1");
         triplesMul.mMul(this->Wfx1, this->X[round], temp40t1_1);
+        // triplesMul.getPlain(temp40t1_1, "X * Wfx1");
         if (round)
             triplesMul.mMul(this->Wfh1, this->H[round - 1], temp40t1_2);
         else
@@ -437,7 +445,7 @@ void Lstm_layer1::forward()
         lstmTools.mAdd(temp40t1_3, this->Bf1, this->block.f);
         triplesMul.sigmoid(this->block.f);
         lstmTools.mCopy(this->block.f, this->F[round]); //保存
-
+        // triplesMul.getPlain(this->block.f, "f");
         //求i
         triplesMul.mMul(this->Wix1, this->X[round], temp40t1_1);
         if (round)
@@ -448,7 +456,7 @@ void Lstm_layer1::forward()
         lstmTools.mAdd(temp40t1_3, this->Bi1, this->block.i);
         triplesMul.sigmoid(this->block.i);
         lstmTools.mCopy(this->block.i, this->I[round]); //保存
-
+        // triplesMul.getPlain(this->block.i, "i");
         //求g
         triplesMul.mMul(this->Wgx1, this->X[round], temp40t1_1);
         if (round)
@@ -459,7 +467,7 @@ void Lstm_layer1::forward()
         lstmTools.mAdd(temp40t1_3, this->Bg1, this->block.g);
         triplesMul.tanh(this->block.g, this->block.g);
         lstmTools.mCopy(this->block.g, this->G[round]); //保存
-
+        // triplesMul.getPlain(this->block.g, "g");
         //求o
         triplesMul.mMul(this->Wox1, this->X[round], temp40t1_1);
         if (round)
@@ -470,7 +478,7 @@ void Lstm_layer1::forward()
         lstmTools.mAdd(temp40t1_3, this->Bo1, this->block.o);
         triplesMul.sigmoid(this->block.o);
         lstmTools.mCopy(this->block.o, this->O[round]); //保存
-
+        // triplesMul.getPlain(this->block.o, "o");
         //求s
         triplesMul.mMull(this->block.g, this->block.i, temp40t1_1);
         if (round)
@@ -478,10 +486,11 @@ void Lstm_layer1::forward()
         else
             triplesMul.mMull(this->s_minus1, this->block.f, temp40t1_2);
         lstmTools.mAdd(temp40t1_1, temp40t1_2, this->S[round]);
-
+        // triplesMul.getPlain(this->S[round], "s");
         //求h
         triplesMul.tanh(this->S[round], temp_Sj);
         triplesMul.mMull(temp_Sj, this->block.o, this->H[round]);
+        // triplesMul.getPlain(this->H[round], "h");
     }
 }
 

@@ -10,31 +10,15 @@ int check()
     bool flag = false;
     string sName, cName;
     mpz_class index1, index2;
-    char type;
-    cout << "Input one of the file names:" << flush;
+    int type;
+    cout << "Input SERVER file path:" << flush;
     cin >> sName;
-    cName = sName;
-    if (sName[0] == 'S')
-    {
-        cName[0] = 'C';
-        cName[1] = 'L';
-        cName[2] = 'I';
-        cName[3] = 'E';
-        cName[4] = 'N';
-        cName[5] = 'T';
-    } else
-    {
-        cName[0] = 'S';
-        cName[1] = 'E';
-        cName[2] = 'R';
-        cName[3] = 'V';
-        cName[4] = 'E';
-        cName[5] = 'R';
-    }
-    cout << "Another file name:          " << cName << endl;
-    type = (sName[7] == 'i') ? '1' : '2';
+    cout << "Input CLIENT file path:" << flush;
+    cin >> cName;
+    cout << "Type: (1)int (2)matrix :" << flush;
+    cin >> type;
     start = time(nullptr);
-    if (type == '1')
+    if (type == 1)
     {
         mpz_class a0, b0, c0, a1, b1, c1;
         mpz_class A, B, C, temp_mul, ans;
@@ -61,7 +45,8 @@ int check()
         }
         infileS.close();
         infileC.close();
-    } else
+    }
+    else if (type == 2)
     {
         Matrix a0, b0, c0, a1, b1, c1;
         Matrix A, B, C, temp_mul, ans;
@@ -89,6 +74,11 @@ int check()
         }
         infileS.close();
         infileC.close();
+    }
+    else
+    {
+        printf("ERROR\n");
+        exit(1);
     }
     if (flag)
         cout << "Triples PASS" << endl;
