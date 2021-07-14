@@ -5,3 +5,6 @@ output/
 mem.log
 task.sh
 .gitignore
+test/
+build/
+.vscode

@@ -124,6 +124,15 @@ mpz_class randNumGen()
     return ans;
 }
 
+//在大素数范围内生成随机数
+// mpz_class randNumGen(default_random_engine e,gmp_randstate_t grt)
+// {
+//     mpz_class ans, randNum;
+//     mpz_urandomb(randNum.get_mpz_t(), grt, randBit);
+//     mpz_mod(ans.get_mpz_t(), randNum.get_mpz_t(), modNum[modNumIndex].get_mpz_t());
+//     return ans;
+// }
+
 void showTime()
 {
     time_t point = time(nullptr);

@@ -13,6 +13,7 @@
 #include <ctime>
 #include <fstream>
 #include <iomanip>
+#include <sstream>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -95,6 +96,14 @@ char *stringToChar(string in_string);
 
 //在大素数范围内生成随机数
 mpz_class randNumGen();
+//在大素数范围内生成大量随机数
+inline mpz_class randNumGen(default_random_engine e, gmp_randstate_t grt)
+{
+    mpz_class ans, randNum;
+    mpz_urandomb(randNum.get_mpz_t(), grt, randBit);
+    mpz_mod(ans.get_mpz_t(), randNum.get_mpz_t(), modNum[modNumIndex].get_mpz_t());
+    return ans;
+}
 
 void showTime();
 

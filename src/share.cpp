@@ -4,14 +4,14 @@ void shareGen()
 {
     start = time(nullptr);
     //指定文件路径=MAX(FREQUENCY(IF(B2:RM2=0,COLUMN(B2:RM2)),IF(B2:RM2<>0,COLUMN(B2:RM2))))
-    string p[5] = {"input/data/center0.csv", "input/data/center1.csv", "input/data/center2.csv", "input/data/center3.csv", "input/data/center4.csv"};
+    string path[5] = {"input/data/center0.csv", "input/data/center1.csv", "input/data/center2.csv", "input/data/center3.csv", "input/data/center4.csv"};
     string fileName1[5] = {"input/data/SERVER_0.dat", "input/data/SERVER_1.dat", "input/data/SERVER_2.dat", "input/data/SERVER_3.dat", "input/data/SERVER_4.dat"};
     string fileName2[5] = {"input/data/CLIENT_0.dat", "input/data/CLIENT_1.dat", "input/data/CLIENT_2.dat", "input/data/CLIENT_3.dat", "input/data/CLIENT_4.dat"};
 
     for (int k = shareStart; k < shareEnd; k++)
     {
         ifstream _csvInput;
-        _csvInput.open(p[k], ios::in);
+        _csvInput.open(path[k], ios::in);
         //定义一行数据为字符串
         string _Oneline;
         ofstream outfile1, outfile2;
@@ -21,60 +21,80 @@ void shareGen()
         mpz_class x_z;
         mpz_class server, client;
         int index = 0;
-        vector<string> plaintext;
+        // vector<string> plaintext;
+        vector<array<string, 480>> valueLists;
+        const char *delim = ",";
         while (getline(_csvInput, _Oneline))
-            plaintext.push_back(_Oneline);
-        string ciphertext[2][plaintext.size()];
-        for (int p = 0; p < plaintext.size(); p++)
         {
-            //定义字符串流对象
-            istringstream _Readstr(plaintext[p]);
-            string serverStr, clientStr;
+            array<string, 480> valueTemp;
+            char *buffer = new char[_Oneline.size() + 1];
+            buffer[_Oneline.size()] = '\0';
+            copy(_Oneline.begin(), _Oneline.end(), buffer);
+            char *p = std::strtok(buffer, delim);
+            valueTemp[0] = p;
+            for (int r = 1; r < 480; r++)
+            {
+                p = std::strtok(NULL, delim);
+                valueTemp[r] = p;
+            }
+            valueLists.push_back(valueTemp);
+        }
+        _csvInput.close();
+        cout << "Process: " << path[k] << endl;
+        int userCounts = valueLists.size();
+        // string ciphertext[2][userCounts];
+        stringstream ciphertextServer, ciphertextClient;
+        stringstream ssServerStr, ssClientStr;
+        random_device rd;
+        default_random_engine e(rd());
+        for (int p = 0; p < userCounts; p++)
+        {
+            gmp_randstate_t grt;
+            gmp_randinit_mt(grt);
+            gmp_randseed_ui(grt, e());
+            array<string, 480> userValue = valueLists[p];
             //一个人有480个数据点
             for (int r = 0; r < 480; r++)
             {
-                //定义一行数据中的各个字串
-                string _partOfstr;
-                getline(_Readstr, _partOfstr, ',');
-                x_f = stof(_partOfstr); //数据点
+                x_f = stof(userValue[r]); //数据点
                 mpf_mul_2exp(x_f.get_mpf_t(), x_f.get_mpf_t(), eAndC);
-                server = randNumGen();
+                server = randNumGen(e, grt);
                 x_z = x_f;
                 client = x_z + modNum[modNumIndex] - server;
-                serverStr += server.get_str();
-                clientStr += client.get_str();
+                ssServerStr << server.get_str();
+                ssClientStr << client.get_str();
                 int time = r % 48;
                 int day = (r + 4) % 7;
                 //将一行数据按'，'分割
                 for (int i = 0; i < 57; i++)
                 {
-                    serverStr += ",";
-                    clientStr += ",";
                     if ((i < 48 && i == time) || (i < 55 && i - 48 == day))
                         x_f = 1;
                     else
                         x_f = 0;
                     mpf_mul_2exp(x_f.get_mpf_t(), x_f.get_mpf_t(), eAndC);
-                    server = randNumGen();
+                    server = randNumGen(e, grt);
                     x_z = x_f;
                     client = x_z + modNum[modNumIndex] - server;
-                    serverStr += server.get_str();
-                    clientStr += client.get_str();
+                    ssServerStr << "," << server.get_str();
+                    ssClientStr << "," << client.get_str();
                 }
-                serverStr += "\n";
-                clientStr += "\n";
+                ssServerStr << "\n";
+                ssClientStr << "\n";
                 index++;
-                cout << symbol[index / 10 % 4] << " No." << index / 480 << "|" << index % 480 << " \r" << flush;
+                
             }
-            ciphertext[0][p] = serverStr;
-            ciphertext[1][p] = clientStr;
-            showTime();
+            ciphertextServer << ssServerStr.str();
+            ciphertextClient << ssClientStr.str();
+            ssServerStr.str("");
+            ssClientStr.str("");
+            // printf("Rand Time: %.3fs | Using time: %.3fs\n", (float)remain / CLOCKS_PER_SEC, (float)(t4 - t3) / CLOCKS_PER_SEC);
+            cout << "\rNo." << index / 480 << flush;
+            gmp_randclear(grt);
         }
-        for (int p = 0; p < plaintext.size(); p++)
-        {
-            outfile1 << ciphertext[0][p];
-            outfile2 << ciphertext[1][p];
-        }
+        cout << "\rFile writing...\r" << flush;
+        outfile1 << ciphertextServer.str();
+        outfile2 << ciphertextClient.str();
         outfile1.close();
         outfile2.close();
     }
